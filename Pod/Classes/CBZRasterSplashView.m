@@ -26,9 +26,7 @@
         UIImageView *iconImageView = [UIImageView new];
         iconImageView.image = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         iconImageView.tintColor = self.iconColor;
-        iconImageView.frame = CGRectMake(0, 0, self.iconStartSize.width, self.iconStartSize.height);
         iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-        iconImageView.center = self.center;
         
         [self addSubview:iconImageView];
         
@@ -44,15 +42,23 @@
     if (!self.animationDuration) {
         return;
     }
-    
+    self.iconImageView.frame = CGRectMake(0, 0, self.iconStartSize.width, self.iconStartSize.height);
+    self.iconImageView.center = self.center;
+
     CGFloat shrinkDuration = self.animationDuration * 0.3;
     CGFloat growDuration = self.animationDuration * 0.7;
+
     
-    [UIView animateWithDuration:shrinkDuration delay:0 usingSpringWithDamping:0.7f initialSpringVelocity:10 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:shrinkDuration delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
         CGAffineTransform scaleTransform = CGAffineTransformMakeScale(0.75, 0.75);
         weakSelf.iconImageView.transform = scaleTransform;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:growDuration animations:^{
+        [UIView animateWithDuration:growDuration
+                              delay:0.f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
             CGAffineTransform scaleTransform = CGAffineTransformMakeScale(20, 20);
             weakSelf.iconImageView.transform = scaleTransform;
             weakSelf.alpha = 0;
@@ -63,6 +69,7 @@
             }
         }];
     }];
+    
 }
 
 @end
